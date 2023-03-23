@@ -2,18 +2,20 @@ import './App.css';
 import{Box} from '@mui/material'
 import Navbar from './Component/Navbar';
 import Home from './Component/Home';
-import Dashboard from './Component/Dashboard';
+import Movies from './Component/Movies';
 import Login from './Component/Login';
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 function App() {
   return (
     <BrowserRouter>
+    <Box sx={{width:{lg:"1000px"}}}>
       <Navbar/>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/login" element={<Login/>}/>
+        <Route path="/Movies" element={<Movies/>}/>
+        <Route path="/" element={<Home/>}/>
       </Routes>
+      </Box>
     </BrowserRouter>
   );
 }
