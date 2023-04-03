@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "amazon-cognito-identity-js": "^6.2.0",
     "amplify": "^0.0.11",
     "aws-amplify": "^5.0.23",
     "convert-csv-to-json": "^2.0.0",
@@ -53,6 +54,7 @@
     ]
   },
   "devDependencies": {
-    "source-map-loader": "^4.0.1"
+    "source-map-loader": "^4.0.1",
+    "webpack-cli": "^5.0.1"
   }
 }
