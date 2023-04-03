@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import UserPool from "../UserPool";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
+import { authUser } from "../App";
 const Login = () => {
+  const {setAuthenticated}=useContext(authUser)
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
 
@@ -20,12 +22,17 @@ const Login = () => {
     user.authenticateUser(authDetails,{
         onSuccess:(data)=>{
             console.log("Success:",data)
+            setAuthenticated(true)
         },
         onFailure:(err)=>{
             console.log(("Failure:",err))
+            setAuthenticated(false)
+
         },
         newPasswordRequired:(data)=>{
-            console.log(data);
+            console.log("newPasswordRequired",data);
+            setAuthenticated(true)
+
         }    })
   }
   return (
