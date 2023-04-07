@@ -10,8 +10,10 @@ export const authUser=createContext();
 function App() {
   
   const [authenticated,setAuthenticated]=useState(false)
+  const [id,setId]=useState();
+
   return (
-    <authUser.Provider value={{setAuthenticated:setAuthenticated}}>
+    <authUser.Provider value={{setAuthenticated:setAuthenticated,id:id,setId:setId}}>
     <BrowserRouter>
     <Box sx={{width:{lg:"1000px"}}}>
       {authenticated===true?
