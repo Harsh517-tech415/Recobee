@@ -1,21 +1,21 @@
-import React, { useCallback,  useMemo, useState } from "react";
+import React, { useCallback,  useEffect,  useMemo, useState } from "react";
 import Papa from "papaparse";
 import MaterialReactTable from "material-react-table";
 import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,MenuItem,Stack,TextField,Tooltip} from "@mui/material";
 import { Delete, Edit } from '@mui/icons-material';
-
+import axios from 'axios'
 
 const Movies = () => {
   const [data, setData] = useState([]);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [tableData, setTableData] = useState(() => data);
   const [validationErrors, setValidationErrors] = useState({});
-
+  
   const handleCreateNewRow = (values) => {
     // data.push(values);
     setData([...data,values]);
   };
-
+  
   const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
     if (!Object.keys(validationErrors).length) {
       data[row.index] = values;
@@ -24,21 +24,21 @@ const Movies = () => {
       exitEditingMode(); //required to exit editing mode and close modal
     }
   };
-
+  
   const handleCancelRowEdits = () => {
     setValidationErrors({});
   };
-
+  
   const handleDeleteRow = useCallback(
     (row) => {
       if (window.confirm(`Are you sure you want to delete ${row.getValue('id ','title')}`))
-        {let rowData=data;
-         rowData.splice(row.index, 1);
-          setData([...rowData]);
+      {let rowData=data;
+        rowData.splice(row.index, 1);
+        setData([...rowData]);
       }
     },
   );
-
+  
   const handleFileUpload = (event) => {
     Papa.parse(event.target.files[0], {
       header: true,
@@ -51,7 +51,7 @@ const Movies = () => {
       },
     });
   };
-
+  
   const ColmunsData = useMemo(() => [
     {
       accessorKey: "id", //access nested data with dot notation
@@ -134,7 +134,28 @@ const Movies = () => {
       header: "Backdropimageurl",
     },
   ]);
+  
+  const baseURL = "https://developapifree.reco-bee.com/common/v1/trending";
+  useEffect(()=>{
+    const axiosInstance = axios.create({
+      baseURL: 'https://developapifree.reco-bee.com/common/v1/'
+    })
+    axiosInstance.interceptors.request.use(
+      config => {
+        const token ="eyJraWQiOiJRNUd3TzV1dGJpWHJvZWNuQUxPM2JNOWtOZGZhaTVkNTdYanMwdVJHV0FNPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1YWIwMGIyZC04OWVlLTQ0ZjktOGRjMS03ZTVjNzUzZDNlOTkiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX2lzd21jbHQ4OCIsImNsaWVudF9pZCI6IjJwYnI1c2x1cjBtbmZpY3J2cXIxa3NiNTlhIiwib3JpZ2luX2p0aSI6ImE2Y2Y5MGI4LTdmNzYtNGNiNC04OGVkLWVmYWYzYmY4MDQ1NSIsImV2ZW50X2lkIjoiOTU2MGI3ZWUtNWIzMS00ZDIxLWEwOTctYTcyZmM4ZjljZWEwIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTY4MDg1MTYxNiwiZXhwIjoxNjgwODU1MjE2LCJpYXQiOjE2ODA4NTE2MTYsImp0aSI6IjIyZTA2NzgxLTJlNWEtNGY1My04ZmEyLTBjYzVmNTQ5YTZhYiIsInVzZXJuYW1lIjoicmVjb2JlZWFkbWluIn0.aoPSbq5ad8I97KmRa2poTikVBL5YdyX_KtROYViJL687dj1Y0jtxW3R7VGkDfaPIHKH63WLMbGJwlm22XJctMRsHp2gwHDfxtnUgHOs1n8IH-pQ0H3KF9sPg2DmIeTeE8aT8AbxJMLfaYTzThQMvgDPxnn5Z-YuN3kbwPOeCvp7I-dGFwbynVWphsB0KotqLkw4peybRqDPNHQ_o0qzZG-jaKWGPbzXRvf9aErWK9ddiBgUzGiUjm3jTHGMfrbbRRl6HfMcN0cKgZZ7_NWJRwR06WCJir1ZqdWP6oBIMeeJdbCttCBovnw95fMZ3FLJs6dUIkbU7iSd6nq6hYtiOsw";
 
+        if (token) {
+          config.headers['Authorization'] = 'Bearer ' + token
+          config.headers['api_key']='ABCDEFGH'
+        }
+        return config
+      },
+      error => {
+        Promise.reject(error)
+      }
+    )
+    axiosInstance.get('trending').then((res)=>{console.log(res)}).catch((err)=>{console.log(err)})
+  },[])
   return (
     <>
       <input type="file" onChange={handleFileUpload} />
