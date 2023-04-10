@@ -11,9 +11,10 @@ function App() {
   
   const [authenticated,setAuthenticated]=useState(false)
   const [id,setId]=useState();
+  const [refresh,setRefresh]=useState();
 
   return (
-    <authUser.Provider value={{setAuthenticated:setAuthenticated,id:id,setId:setId}}>
+    <authUser.Provider value={{setAuthenticated:setAuthenticated,id:id,setId:setId,refresh:refresh,setRefresh:setRefresh}}>
     <BrowserRouter>
     <Box sx={{width:{lg:"1000px"}}}>
       {authenticated===true?

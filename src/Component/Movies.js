@@ -11,7 +11,7 @@ const Movies = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [tableData, setTableData] = useState(() => data);
   const [validationErrors, setValidationErrors] = useState({});
-  const {id}=useContext(authUser)
+  const {id,setId,refresh}=useContext(authUser)
   const handleCreateNewRow = (values) => {
     // data.push(values);
     setData([...data,values]);
@@ -135,19 +135,22 @@ const Movies = () => {
       header: "Backdropimageurl",
     },
   ]);
+  const[imbd,setImbd]=useState()  
+  // const baseURL = "https://developapifree.reco-bee.com/common/v1/trending";
+  const axiosInstance = axios.create({
+    baseURL: 'https://developapifree.reco-bee.com/common/v1/'
+  })
   
-  const baseURL = "https://developapifree.reco-bee.com/common/v1/trending";
   useEffect(()=>{
-    const axiosInstance = axios.create({
-      baseURL: 'https://developapifree.reco-bee.com/common/v1/'
-    })
+   
+
+
+
     axiosInstance.interceptors.request.use(
       config => {
-        const token =id
-
-        if (token) {
-          config.headers['Authorization'] = 'Bearer ' + token
-          config.headers['api_key']='ABCDEFGH'
+        config.headers = { 
+          'Authorization': `Bearer ${id}`,
+          'api_key': 'ABCDEFGH',
         }
         return config
       },
@@ -155,8 +158,46 @@ const Movies = () => {
         Promise.reject(error)
       }
     )
-    axiosInstance.get('trending').then((res)=>{console.log(res)}).catch((err)=>{console.log(err)})
-  },[])
+    axiosInstance.get('trending')
+    .then((res)=>{console.log(res)})
+    .catch((err)=>{
+      if(err.response.status===401)
+      {
+        axios.post('',{
+          refresh
+        }).then(res=>{
+          setId(res.data.jwtToken)
+          
+        })
+        .catch((err)=>console.log(err))
+
+      }})
+      
+  }
+  ,[id])
+
+  
+function insertMovie()
+{
+  const axiosPost=axios.create({
+    baseURL:'https://developapifree.reco-bee.com/common/v1/'
+  })
+  axiosPost.interceptors.response.use(
+    response => {
+      console.log("response",response)
+      return response
+    },
+    function (error) {
+      console.log(error)
+      
+      }
+    
+  )
+  axiosPost.post(`insertdetails/${imbd}`)
+  .then((res)=>{console.log(res)})
+  .catch((err)=>{console.log(err)})
+}
+
   return (
     <>
       <input type="file" onChange={handleFileUpload} />
@@ -192,23 +233,9 @@ const Movies = () => {
                 </IconButton>
               </Tooltip>
             </Box>
-          )}
-          renderTopToolbarCustomActions={() => (
-            <Button
-              color='secondary'
-              onClick={() => setCreateModalOpen(true)}
-              variant="contained"
-            >
-              Create New Account
-            </Button>
-          )}
-        />
-        <CreateNewAccountModal
-          columns={ColmunsData}
-          open={createModalOpen}
-          onClose={() => setCreateModalOpen(false)}
-          onSubmit={handleCreateNewRow}
-        />
+          )}/>
+      {/* <Button variant="contained" color='secondary' sx={{mt:"1%"}} onClick={insertMovie}>Insert Movie</Button>
+      <TextField type="text" sx={{ml:"3%",mt:"1%"}} onChange={(e)=>{setImbd(e.target.value)}}/> */}
       </Box>
     </>
   );
@@ -216,56 +243,6 @@ const Movies = () => {
 
 
 
-
-export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
-  const [values, setValues] = useState(() =>
-    columns.reduce((acc, column) => {
-      acc[column.accessorKey ?? ""] = "";
-      return acc;
-    }, {})
-  );
-
-  const handleSubmit = () => {
-    //put your validation logic here
-    console.log(values)
-    onSubmit(values);
-    onClose();
-  };
-
-  return (
-    <Dialog open={open}>
-      <DialogTitle textAlign="center">Create New Account</DialogTitle>
-      <DialogContent>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <Stack
-            sx={{
-              width: "100%",
-              minWidth: { xs: "300px", sm: "360px", md: "400px" },
-              gap: "1.5rem",
-            }}
-          >
-            {columns.map((column) => (
-              <TextField
-                key={column.accessorKey}
-                label={column.header}
-                name={column.accessorKey}
-                onChange={(e) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-              />
-            ))}
-          </Stack>
-        </form>
-      </DialogContent>
-      <DialogActions sx={{ p: "1.25rem" }}>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button color="secondary" onClick={handleSubmit} variant="contained">
-          Create New Account
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
 
 
 export default Movies;
