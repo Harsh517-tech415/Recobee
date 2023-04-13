@@ -6,8 +6,7 @@ import { Box, Button, InputAdornment, Stack, TextField } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
 const Login = () => {
-  const {setAuthenticated,setId,setRefresh}=useContext(authUser)
-    const [email,setEmail]=useState("");
+  const {setAuthenticated,setId,setRefresh,email,setEmail}=useContext(authUser)
     const [password,setPassword]=useState("");
 
   function onSubmit(e) 
@@ -27,8 +26,7 @@ const Login = () => {
         onSuccess:(data)=>{
           
             setId(data.idToken['jwtToken'])
-            setRefresh(data.refreshToken['token'])
-            // console.log(data)
+            setRefresh(data.refreshToken)
             setAuthenticated(true)
         },
         onFailure:(err)=>{

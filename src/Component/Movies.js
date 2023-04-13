@@ -5,13 +5,17 @@ import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,Men
 import { Delete, Edit } from '@mui/icons-material';
 import axios from 'axios'
 import { authUser } from "../App";
+import { insertMovie, trending } from "../Api";
+import { CognitoUser } from "amazon-cognito-identity-js";
+import UserPool from "../UserPool";
 
 const Movies = () => {
+  const[imbd,setImbd]=useState()  
   const [data, setData] = useState([]);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [tableData, setTableData] = useState(() => data);
   const [validationErrors, setValidationErrors] = useState({});
-  const {id,setId,refresh}=useContext(authUser)
+  const {id,setId,refresh,email}=useContext(authUser)
   const handleCreateNewRow = (values) => {
     // data.push(values);
     setData([...data,values]);
@@ -135,68 +139,35 @@ const Movies = () => {
       header: "Backdropimageurl",
     },
   ]);
-  const[imbd,setImbd]=useState()  
   // const baseURL = "https://developapifree.reco-bee.com/common/v1/trending";
   const axiosInstance = axios.create({
     baseURL: 'https://developapifree.reco-bee.com/common/v1/'
   })
   
   useEffect(()=>{
-   
-
-
-
-    axiosInstance.interceptors.request.use(
-      config => {
-        config.headers = { 
-          'Authorization': `Bearer ${id}`,
-          'api_key': 'ABCDEFGH',
-        }
-        return config
-      },
-      error => {
-        Promise.reject(error)
-      }
-    )
-    axiosInstance.get('trending')
-    .then((res)=>{console.log(res)})
-    .catch((err)=>{
-      if(err.response.status===401)
-      {
-        axios.post('',{
-          refresh
-        }).then(res=>{
-          setId(res.data.jwtToken)
-          
-        })
-        .catch((err)=>console.log(err))
-
-      }})
-      
+    const res = trending(id,setId,email,refresh)
   }
   ,[id])
 
+
+// function insertMovie()
+// {
   
-function insertMovie()
-{
-  const axiosPost=axios.create({
-    baseURL:'https://developapifree.reco-bee.com/common/v1/'
-  })
-  axiosPost.interceptors.response.use(
-    response => {
-      console.log("response",response)
-      return response
-    },
-    function (error) {
-      console.log(error)
-      
-      }
-    
-  )
-  axiosPost.post(`insertdetails/${imbd}`)
-  .then((res)=>{console.log(res)})
-  .catch((err)=>{console.log(err)})
-}
+//   axiosInstance.interceptors.request.use(
+//     config => {
+//       config.headers = { 
+//         'Authorization': `Bearer ${id}`,
+//       }
+//       return config
+//     },
+//     error => {
+//       Promise.reject(error)
+//     }
+//   )
+//   axiosInstance.post()
+//   .then((res)=>{console.log(res)})
+//   .catch((err)=>{console.log(err)})
+// }
 
   return (
     <>
@@ -222,7 +193,8 @@ function insertMovie()
           
           renderRowActions={({ row, table }) => (
             <Box sx={{ display: "flex", gap: "1rem" }}>
-              <Tooltip arrow placement="left" title="Edit">
+              <Tooltip arrow placement="lef
+              " title="Edit">
                 <IconButton onClick={() => table.setEditingRow(row)}>
                   <Edit />
                 </IconButton>
@@ -234,8 +206,8 @@ function insertMovie()
               </Tooltip>
             </Box>
           )}/>
-      {/* <Button variant="contained" color='secondary' sx={{mt:"1%"}} onClick={insertMovie}>Insert Movie</Button>
-      <TextField type="text" sx={{ml:"3%",mt:"1%"}} onChange={(e)=>{setImbd(e.target.value)}}/> */}
+      <Button variant="contained" color='secondary' sx={{mt:"1%"}} onClick={()=>{insertMovie(id,setId,email,refresh,imbd)}}>Insert Movie</Button>
+      <TextField type="text" sx={{ml:"3%",mt:"1%"}} onChange={(e)=>{setImbd(e.target.value)}}/>
       </Box>
     </>
   );

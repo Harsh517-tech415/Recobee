@@ -8,13 +8,13 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import { createContext, useState } from 'react';
 export const authUser=createContext();
 function App() {
-  
+  const [email,setEmail]=useState("");
   const [authenticated,setAuthenticated]=useState(false)
   const [id,setId]=useState();
   const [refresh,setRefresh]=useState();
 
   return (
-    <authUser.Provider value={{setAuthenticated:setAuthenticated,id:id,setId:setId,refresh:refresh,setRefresh:setRefresh}}>
+    <authUser.Provider value={{setAuthenticated:setAuthenticated,id:id,setId:setId,refresh:refresh,setRefresh:setRefresh,email:email,setEmail:setEmail}}>
     <BrowserRouter>
     <Box sx={{width:{lg:"1000px"}}}>
       {authenticated===true?
