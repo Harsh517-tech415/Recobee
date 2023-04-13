@@ -17,16 +17,13 @@ const Movies = () => {
   const [validationErrors, setValidationErrors] = useState({});
   const {id,setId,refresh,email}=useContext(authUser)
   const handleCreateNewRow = (values) => {
-    // data.push(values);
     setData([...data,values]);
   };
   
   const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
     if (!Object.keys(validationErrors).length) {
       data[row.index] = values;
-      //send/receive api updates here, then refetch or update local table data for re-render
       setData([...data]);
-      exitEditingMode(); //required to exit editing mode and close modal
     }
   };
   
@@ -139,7 +136,6 @@ const Movies = () => {
       header: "Backdropimageurl",
     },
   ]);
-  // const baseURL = "https://developapifree.reco-bee.com/common/v1/trending";
   const axiosInstance = axios.create({
     baseURL: 'https://developapifree.reco-bee.com/common/v1/'
   })
@@ -164,7 +160,7 @@ const Movies = () => {
 //       Promise.reject(error)
 //     }
 //   )
-//   axiosInstance.post()
+//   axiosInstance.post(`insertdetails/${imbd}`)
 //   .then((res)=>{console.log(res)})
 //   .catch((err)=>{console.log(err)})
 // }
