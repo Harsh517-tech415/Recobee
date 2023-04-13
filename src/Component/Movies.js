@@ -1,13 +1,11 @@
 import React, { useCallback,  useContext,  useEffect,  useMemo, useState } from "react";
 import Papa from "papaparse";
 import MaterialReactTable from "material-react-table";
-import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,MenuItem,Stack,TextField,Tooltip} from "@mui/material";
+import {Box,Button,IconButton,TextField,Tooltip} from "@mui/material";
 import { Delete, Edit } from '@mui/icons-material';
 import axios from 'axios'
 import { authUser } from "../App";
 import { insertMovie, trending } from "../Api";
-import { CognitoUser } from "amazon-cognito-identity-js";
-import UserPool from "../UserPool";
 
 const Movies = () => {
   const[imbd,setImbd]=useState()  
@@ -56,10 +54,10 @@ const Movies = () => {
   
   const ColmunsData = useMemo(() => [
     {
-      accessorKey: "id", //access nested data with dot notation
+      accessorKey: "id", 
       header: "Id",
       enableColumnOrdering: false,
-      enableEditing: false, //disable editing on this column
+      enableEditing: false, 
       enableSorting: false,
       size: 80,
     },
@@ -136,35 +134,21 @@ const Movies = () => {
       header: "Backdropimageurl",
     },
   ]);
-  const axiosInstance = axios.create({
-    baseURL: 'https://developapifree.reco-bee.com/common/v1/'
-  })
+  
   
   useEffect(()=>{
     const res = trending(id,setId,email,refresh)
-  }
+    res.then(data => {
+      setData(data)
+    }).catch(error => {
+      console.error(error)
+  })
+}
   ,[id])
 
-
-// function insertMovie()
-// {
-  
-//   axiosInstance.interceptors.request.use(
-//     config => {
-//       config.headers = { 
-//         'Authorization': `Bearer ${id}`,
-//       }
-//       return config
-//     },
-//     error => {
-//       Promise.reject(error)
-//     }
-//   )
-//   axiosInstance.post(`insertdetails/${imbd}`)
-//   .then((res)=>{console.log(res)})
-//   .catch((err)=>{console.log(err)})
-// }
-
+useEffect(()=>{
+  console.log(data)
+},[data])
   return (
     <>
       <input type="file" onChange={handleFileUpload} />

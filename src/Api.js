@@ -21,7 +21,6 @@ export function trending(id, setId, email, refresh) {
 
   return axiosInstance.get("trending")
     .then(response => {
-      console.log(response.data);
       return response.data;
     })
     .catch(res => {
@@ -39,7 +38,6 @@ export function trending(id, setId, email, refresh) {
         });
       } else {
         console.log(res);
-        console.log(1);
       }
     });
 }
@@ -60,7 +58,6 @@ export function insertMovie(id, setId, email, refresh,imbd) {
   
     return axiosInstance.post(`insertdetails/${imbd}`)
       .then(response => {
-        console.log(response.data)
         return response.data;
       })
       .catch(res => {
