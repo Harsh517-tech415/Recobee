@@ -8,15 +8,15 @@ import { authUser } from "../App";
 import { insertMovie, trending } from "../Api";
 
 const Movies = () => {
+  // const [createModalOpen, setCreateModalOpen] = useState(false);
+  // const [tableData, setTableData] = useState(() => data);
+  // const handleCreateNewRow = (values) => {
+  //   setData([...data,values]);
+  // };
   const[imbd,setImbd]=useState()  
   const [data, setData] = useState([]);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [tableData, setTableData] = useState(() => data);
   const [validationErrors, setValidationErrors] = useState({});
   const {id,setId,refresh,email}=useContext(authUser)
-  const handleCreateNewRow = (values) => {
-    setData([...data,values]);
-  };
   
   const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
     if (!Object.keys(validationErrors).length) {

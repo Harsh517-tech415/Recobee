@@ -14,6 +14,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
 import { useNavigate } from 'react-router-dom'
+import BrowserUpdatedIcon from '@mui/icons-material/BrowserUpdated';
 const drawerWidth = 240;
 const Home = () => {
   const navigate=useNavigate()
@@ -70,16 +71,22 @@ const Home = () => {
         </Box>
         <Divider />
         <List>
-          {["Movie"].map((text, index) => (
-            <ListItem key={text} disablePadding>
+            <ListItem  disablePadding>
               <ListItemButton onClick={()=>{navigate('/Movies')}}>
                 <ListItemIcon>
                   <LocalMoviesIcon />
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary="Movie" />
               </ListItemButton>
             </ListItem>
-          ))}
+            <ListItem  disablePadding>
+              <ListItemButton onClick={()=>{navigate('/update')}}>
+                <ListItemIcon>
+                  <BrowserUpdatedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Update" />
+              </ListItemButton>
+            </ListItem>
         </List>
       </Drawer>
       <Typography

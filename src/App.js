@@ -6,6 +6,7 @@ import Movies from './Component/Movies';
 import Login from './Component/Login';
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import { createContext, useState } from 'react';
+import Update from './Component/Update';
 export const authUser=createContext();
 function App() {
   const [email,setEmail]=useState("");
@@ -19,11 +20,12 @@ function App() {
     <Box sx={{width:{lg:"1000px"}}}>
       {authenticated===true?
       (<>
-      {/* {document.cookie='*@&#=ok'} */}
       <Navbar/>
       <Routes>
-        <Route path="/Movies" element={<Movies/>}/>
         <Route path="/" element={<Home/>}/>
+        <Route path="/Movies" element={<Movies/>}/>
+        <Route path="/update" element={<Update/>}/>
+
       </Routes>
       </>):(<Login/>)}
       </Box>
