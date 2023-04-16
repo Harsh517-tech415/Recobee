@@ -24,9 +24,10 @@ const Login = () => {
  
     user.authenticateUser(authDetails,{
         onSuccess:(data)=>{
-          
-            setId(data.idToken['jwtToken'])
-            setRefresh(data.refreshToken)
+          localStorage.setItem('token',`${data.idToken['jwtToken']}`)
+          localStorage.setItem('refresh',`${data.refreshToken}`)
+            // setId(data.idToken['jwtToken'])
+            // setRefresh(data.refreshToken)
             setAuthenticated(true)
         },
         onFailure:(err)=>{

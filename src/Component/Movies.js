@@ -16,7 +16,7 @@ const Movies = () => {
   const[imbd,setImbd]=useState()  
   const [data, setData] = useState([]);
   const [validationErrors, setValidationErrors] = useState({});
-  const {id,setId,refresh,email}=useContext(authUser)
+  const {refresh,email}=useContext(authUser)
   
   const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
     if (!Object.keys(validationErrors).length) {
@@ -137,18 +137,16 @@ const Movies = () => {
   
   
   useEffect(()=>{
-    const res = trending(id,setId,email,refresh)
+    const res = trending(email,refresh)
     res.then(data => {
       setData(data)
     }).catch(error => {
       console.error(error)
   })
 }
-  ,[id])
+  ,[])
 
-useEffect(()=>{
-  console.log(data)
-},[data])
+
   return (
     <>
       <input type="file" onChange={handleFileUpload} />
@@ -173,20 +171,19 @@ useEffect(()=>{
           
           renderRowActions={({ row, table }) => (
             <Box sx={{ display: "flex", gap: "1rem" }}>
-              <Tooltip arrow placement="lef
-              " title="Edit">
+              <Tooltip arrow  title="Edit">
                 <IconButton onClick={() => table.setEditingRow(row)}>
                   <Edit />
                 </IconButton>
               </Tooltip>
-              <Tooltip arrow placement="right" title="Delete">
+              <Tooltip arrow  title="Delete">
                 <IconButton color="error" onClick={() => handleDeleteRow(row)}>
                   <Delete />
                 </IconButton>
               </Tooltip>
             </Box>
           )}/>
-      <Button variant="contained" color='secondary' sx={{mt:"1%"}} onClick={()=>{insertMovie(id,setId,email,refresh,imbd)}}>Insert Movie</Button>
+      <Button variant="contained" color='secondary' sx={{mt:"1%"}} onClick={()=>{insertMovie(email,refresh,imbd)}}>Insert Movie</Button>
       <TextField type="text" sx={{ml:"3%",mt:"1%"}} onChange={(e)=>{setImbd(e.target.value)}}/>
       </Box>
     </>
