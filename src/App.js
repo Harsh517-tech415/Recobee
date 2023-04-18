@@ -1,5 +1,4 @@
 import './App.css';
-import{Box} from '@mui/material'
 import Navbar from './Component/Navbar';
 import Home from './Component/Home';
 import Movies from './Component/Movies';
@@ -17,7 +16,6 @@ function App() {
   return (
     <authUser.Provider value={{setAuthenticated:setAuthenticated,id:id,setId:setId,refresh:refresh,setRefresh:setRefresh,email:email,setEmail:setEmail}}>
     <BrowserRouter>
-    <Box sx={{width:{lg:"1000px"}}}>
       {authenticated===true?
       (<>
       <Navbar/>
@@ -25,10 +23,8 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/Movies" element={<Movies/>}/>
         <Route path="/update" element={<Update/>}/>
-
       </Routes>
       </>):(<Login/>)}
-      </Box>
     </BrowserRouter>
     </authUser.Provider>
   );

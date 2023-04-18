@@ -14,7 +14,7 @@ import MovieIcon from "@mui/icons-material/Movie";
 import { handleUpdateTrailer, handleUpdateTrailerKey } from "../Api";
 import { authUser } from "../App";
 const Update = () => {
-  const { id, setId, refresh, email } = useContext(authUser);
+  const { id, setId, refresh } = useContext(authUser);
 
   return (
     <Grid
@@ -82,7 +82,7 @@ const Update = () => {
       <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
         <form
           onSubmit={(e) => {
-            handleUpdateTrailer(e, id, setId, email, refresh);
+            handleUpdateTrailer(e);
           }}
         >
           <Card
@@ -180,7 +180,7 @@ const Update = () => {
       <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
         <form
         onSubmit={(e) => {
-            handleUpdateTrailerKey(e, id, setId, email, refresh);
+            handleUpdateTrailerKey(e);
           }}>
           <Card
             sx={{
