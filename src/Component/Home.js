@@ -119,7 +119,7 @@ const Home = () => {
       },
       title: {
         display: true,
-        text: "User",
+        text: "Review",
       },
     },
   };

@@ -11,7 +11,7 @@ import React, { useContext } from "react";
 import UpdateIcon from "@mui/icons-material/Update";
 import PublicIcon from "@mui/icons-material/Public";
 import MovieIcon from "@mui/icons-material/Movie";
-import { handleUpdateTrailer, handleUpdateTrailerKey } from "../Api";
+import { handleUpdateTrailer, handleUpdateTrailerKey, handleVote } from "../Api";
 import { authUser } from "../App";
 const Update = () => {
   const { id, setId, refresh } = useContext(authUser);
@@ -22,11 +22,10 @@ const Update = () => {
       direction="row"
       justifyContent="center"
       alignItems="center"
-      rowSpacing={4}
-      //   columns={{ xs: 12, sm: 12, md: 12, lg: 12, xl: 12 }}
-      //   columnSpacing={{ md: -21, lg: 1, xl: 1 }}
+      rowSpacing={1}
+      
     >
-      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+      <Grid item xs={12} sm={12} md={6} lg={6} xl={6} sx={{display:""}}>
         <form>
           <Card
             sx={{
@@ -172,6 +171,7 @@ const Update = () => {
                     submit changes
                   </Button>
                 </CardContent>
+                
               </CardContent>
             </Card>
           </Card>
@@ -210,7 +210,7 @@ const Update = () => {
                     variant="filled"
                     placeholder="ENTER IMBD ID"
                     sx={{ backgroundColor: "white", borderRadius: "3px" }}
-                    name="IMBD ID"
+                    name="Vote"
                   />
                 </CardContent>
                 <CardContent>
@@ -220,6 +220,60 @@ const Update = () => {
                     placeholder="trailer key"
                     sx={{ backgroundColor: "white", borderRadius: "3px" }}
                     name="trailer key"
+                  />
+                </CardContent>
+                <CardContent>
+                  <Button
+                  type="submit"
+                    sx={{
+                      fontSize: "medium",
+                      backgroundColor: "grey",
+                      color: "white",
+                    }}
+                  >
+                    <UpdateIcon />
+                    submit changes
+                  </Button>
+                </CardContent>
+              </CardContent>
+            </Card>
+          </Card>
+        </form>
+      </Grid>
+      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+      <form
+        onSubmit={(e) => {
+            handleVote(e);
+          }}>
+          <Card
+            sx={{
+              width: "350px",
+              fontSize: {
+                xs: "3vw",
+                sm: "2.5vw",
+                md: "1.8vw",
+                lg: "1.2vw",
+                xl: ".8vw",
+              },
+            }}
+          >
+            <Card sx={{ borderRadius: "0px", backgroundColor: "#121212" }}>
+              <CardContent sx={{ ml: "12%" }}>
+                <CardContent>
+                  <Typography
+                    sx={{
+                      fontFamily: "monospace",
+                      fontWeight: "600",
+                      color: "white",
+                    }}
+                  >
+                    Upsert Trailer Key
+                  </Typography>
+                  <TextField
+                    variant="filled"
+                    placeholder="Enter Vote number"
+                    sx={{ backgroundColor: "white", borderRadius: "3px" }}
+                    name="IMBD ID"
                   />
                 </CardContent>
                 <CardContent>

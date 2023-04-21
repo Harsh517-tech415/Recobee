@@ -119,3 +119,24 @@ export function handleUpdateTrailerKey(e) {
       console.log(res);
     });
 }
+
+export function handleVote(e) {
+  e.preventDefault();
+  const form = e.target;
+  const formData = {};
+  for (let i = 0; i < form.elements.length; i++) {
+    const element = form.elements[i];
+    if (!element.name) continue;
+    formData[element.name] = element.value;
+  }
+  console.log(formData);
+
+  return axiosInstance
+    .post(`upsertdetails/${formData.Vote}`)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((res) => {
+      console.log(res);
+    });
+}

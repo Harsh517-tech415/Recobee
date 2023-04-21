@@ -16,6 +16,7 @@ const Movies = () => {
       data[row.index] = values;
       setData([...data]);
     }
+    insertMovie(row._valuesCache.imdbid)
   };
   
   const handleCancelRowEdits = () => {
