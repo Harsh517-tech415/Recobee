@@ -161,7 +161,6 @@ const Home = () => {
               handleClose(15);
             }}
           >
-            {" "}
             15
           </MenuItem>
           <MenuItem
