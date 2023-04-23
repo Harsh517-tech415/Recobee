@@ -127,10 +127,9 @@ const Home = () => {
 
   
   return (
-      <Box>
+      <Box sx={{ml:"15%"}}>
         <Typography
           sx={{
-            ml: "15%",
             textAlign: { sm: "left", lg: "left" },
             fontSize: { sm: "60px", lg: "70px" },
             fontWeight: "800",
