@@ -1,6 +1,6 @@
 import React, { useCallback,  useContext,  useEffect,  useMemo, useState } from "react";
 import MaterialReactTable from "material-react-table";
-import {Box,Button,IconButton,TextField,Tooltip} from "@mui/material";
+import {Box,Button,IconButton,Stack,TextField,Tooltip} from "@mui/material";
 import { Delete, Edit } from '@mui/icons-material';
 import { authUser } from "../App";
 import { insertMovie, trending } from "../Api";
@@ -16,6 +16,7 @@ const Movies = () => {
       data[row.index] = values;
       setData([...data]);
     }
+    console.log(row._valuesCache)
     insertMovie(row._valuesCache.imdbid)
   };
   
@@ -132,7 +133,8 @@ const Movies = () => {
   return (
     <>
    
-      <Box sx={{ ml: "20%" }}>
+      <Box sx={{display:"flex",justifyContent:"center",mt:"1%"}}>
+        <Box sx={{width:{xs:"99vw",sm:"98vw",md:"97vw",lg:"96vw",xl:"95vw"}}}>
         <MaterialReactTable
           columns={ColmunsData}
           data={data}
@@ -165,8 +167,10 @@ const Movies = () => {
               </Tooltip>
             </Box>
           )}/>
-      <Button variant="contained" color='secondary' sx={{mt:"1%"}} onClick={()=>{insertMovie(imbd)}}>Insert Movie</Button>
+          <Stack direction="row" gap={1} justifyContent="center">
       <TextField type="text" sx={{ml:"3%",mt:"1%"}} onChange={(e)=>{setImbd(e.target.value)}}/>
+      <Button variant="contained" fontSize="small" sx={{mt:"1%"}} onClick={()=>{insertMovie(imbd)}}>Insert Movie</Button>
+      </Stack> </Box>
       </Box>
     </>
   );
